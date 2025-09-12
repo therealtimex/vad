@@ -16,11 +16,11 @@ const nextConfig = {
             to: "../public/[name][ext]",
           },
           {
-            from: "node_modules/@ricky0123/vad-web/dist/vad.worklet.bundle.min.js",
+            from: "node_modules/@realtimex/vad-web/dist/vad.worklet.bundle.min.js",
             to: "../public/[name][ext]",
           },
           {
-            from: "node_modules/@ricky0123/vad-web/dist/*.onnx",
+            from: "node_modules/@realtimex/vad-web/dist/*.onnx",
             to: "../public/[name][ext]",
           },
           {

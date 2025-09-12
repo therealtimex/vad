@@ -1,4 +1,4 @@
-name: Publish to npmjs (temporarily disabled)
+name: Publish to npmjs
 
 on:
   workflow_dispatch:
@@ -16,14 +16,13 @@ on:
 
 jobs:
   publish:
-    if: ${{ false }} # Temporarily disabled — enable by removing this line
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
@@ -37,9 +36,6 @@ jobs:
               ;;
             vad-react)
               WORKING_DIRECTORY='./packages/react'
-              ;;
-            vad-node)
-              WORKING_DIRECTORY='./packages/node'
               ;;
             *)
               echo "Error: Unknown package name"
