@@ -11,8 +11,15 @@
     "voice-control",
     "offline-speech-recognition"
   ],
-  "homepage": "https://github.com/ricky0123/vad",
-  "version": "0.1.1",
+  "homepage": "https://github.com/therealtimex/vad",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/therealtimex/vad"
+  },
+  "bugs": {
+    "url": "https://github.com/therealtimex/vad/issues"
+  },
+  "version": "0.1.2",
   "license": "ISC",
   "main": "dist/index.js",
   "unpkg": "dist/bundle.min.js",

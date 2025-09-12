@@ -12,8 +12,15 @@
     "offline-speech-recognition",
     "react"
   ],
-  "homepage": "https://github.com/ricky0123/vad",
-  "version": "0.1.1",
+  "homepage": "https://github.com/therealtimex/vad",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/therealtimex/vad"
+  },
+  "bugs": {
+    "url": "https://github.com/therealtimex/vad/issues"
+  },
+  "version": "0.1.2",
   "license": "ISC",
   "main": "dist/index.js",
   "devDependencies": {
@@ -21,7 +28,7 @@
   },
   "dependencies": {
     "onnxruntime-web": "^1.17.0",
-    "@realtimex/vad-web": "^0.1.1"
+    "@realtimex/vad-web": "^0.1.2"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

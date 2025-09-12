@@ -5,7 +5,7 @@ Prompt your user for microphone permissions and run callbacks on segments of aud
 Quick start:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.1/dist/bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.2/dist/bundle.min.js"></script>
 <script>
   async function main() {
     const myvad = await vad.MicVAD.new({
