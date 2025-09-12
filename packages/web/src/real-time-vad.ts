@@ -193,9 +193,12 @@ export class MicVAD {
 
   destroy = () => {
     if (this.listening) {
+      // `pause` already stops the underlying stream via `pauseStream`
       this.pause()
+    } else if (this.stream.active) {
+      // ensure the stream is released if it wasn't already stopped
+      this.options.pauseStream(this.stream)
     }
-    this.options.pauseStream(this.stream)
     this.sourceNode.disconnect()
     this.audioNodeVAD.destroy()
     this.audioContext.close()
