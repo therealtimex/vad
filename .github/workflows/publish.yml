@@ -1,4 +1,4 @@
-name: Publish to npmjs
+name: Publish to npmjs (temporarily disabled)
 
 on:
   workflow_dispatch:
@@ -16,6 +16,7 @@ on:
 
 jobs:
   publish:
+    if: ${{ false }} # Temporarily disabled — enable by removing this line
     runs-on: ubuntu-latest
     permissions:
       contents: read
