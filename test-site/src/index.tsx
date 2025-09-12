@@ -1,10 +1,6 @@
-import type { ReactRealTimeVADOptions } from "@ricky0123/vad-react"
-import {
-  getDefaultReactRealTimeVADOptions,
-  useMicVAD,
-  utils,
-} from "@ricky0123/vad-react"
-import { SpeechProbabilities } from "@ricky0123/vad-web/dist/models/common"
+import type { ReactRealTimeVADOptions } from "@realtimex/vad-react"
+import { getDefaultReactRealTimeVADOptions, useMicVAD, utils } from "@realtimex/vad-react"
+import { SpeechProbabilities } from "@realtimex/vad-web/dist/models/common"
 import React, { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import NonRealTimeTest from "./non-real-time-test"
