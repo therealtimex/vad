@@ -1,3 +1,5 @@
-# Voice Activity Detector for the React Apps
+# Voice Activity Detector for React
 
-See the [project home](https://github.com/ricky0123/vad) for more details.
+React hook wrapper around @realtimex/vad-web.
+
+See the [project home](https://github.com/therealtimex/vad) and examples/ for usage.
