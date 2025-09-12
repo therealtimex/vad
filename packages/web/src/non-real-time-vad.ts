@@ -11,7 +11,7 @@ import {
   validateOptions,
 } from "./frame-processor"
 import { Message } from "./messages"
-import { ModelFetcher, OrtModule, OrtOptions, SileroLegacy } from "./models"
+import { ModelFetcher, OrtModule, OrtOptions, SileroV6 } from "./models"
 import { Resampler } from "./resampler"
 
 interface NonRealTimeVADSpeechData {
@@ -29,12 +29,12 @@ export interface NonRealTimeVADOptions
 
 export const defaultNonRealTimeVADOptions: NonRealTimeVADOptions = {
   ...defaultFrameProcessorOptions,
-  modelURL: baseAssetPath + "silero_vad_legacy.onnx",
+  modelURL: baseAssetPath + "silero_vad_v6.onnx",
   modelFetcher: defaultModelFetcher,
 }
 
 export class NonRealTimeVAD {
-  frameSamples: number = 1536
+  frameSamples: number = 512
 
   static async new(options: Partial<NonRealTimeVADOptions> = {}) {
     const fullOptions = {
@@ -47,7 +47,7 @@ export class NonRealTimeVAD {
       fullOptions.ortConfig(ortInstance)
     }
     const modelFetcher = () => fullOptions.modelFetcher(fullOptions.modelURL)
-    const model = await SileroLegacy.new(ortInstance, modelFetcher)
+    const model = await SileroV6.new(ortInstance, modelFetcher)
 
     const frameProcessor = new FrameProcessor(
       model.process,
@@ -60,7 +60,7 @@ export class NonRealTimeVAD {
         minSpeechMs: fullOptions.minSpeechMs,
         submitUserSpeechOnPause: fullOptions.submitUserSpeechOnPause,
       },
-      1536 / 16
+      512 / 16
     )
     frameProcessor.resume()
 

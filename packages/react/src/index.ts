@@ -21,7 +21,7 @@ const defaultReactOptions: ReactOptions = {
 }
 
 export const getDefaultReactRealTimeVADOptions = (
-  model: "legacy" | "v5"
+  model: "v6"
 ): ReactRealTimeVADOptions => {
   return {
     ...getDefaultRealTimeVADOptions(model),
@@ -30,7 +30,7 @@ export const getDefaultReactRealTimeVADOptions = (
 }
 
 const reactOptionKeys = Object.keys(defaultReactOptions)
-const vadOptionKeys = Object.keys(getDefaultRealTimeVADOptions("v5"))
+const vadOptionKeys = Object.keys(getDefaultRealTimeVADOptions("v6"))
 
 const _filter = (keys: string[], obj: any) => {
   return keys.reduce((acc, key) => {
@@ -42,7 +42,7 @@ const _filter = (keys: string[], obj: any) => {
 function useOptions(
   options: Partial<ReactRealTimeVADOptions>
 ): [ReactOptions, RealTimeVADOptions] {
-  const model = options.model ?? DEFAULT_MODEL
+  const model = (options.model ?? DEFAULT_MODEL) as "v6"
   options = { ...getDefaultReactRealTimeVADOptions(model), ...options }
   const reactOptions = _filter(reactOptionKeys, options) as ReactOptions
   const vadOptions = _filter(vadOptionKeys, options) as RealTimeVADOptions

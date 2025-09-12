@@ -21,7 +21,7 @@ createRoot(nonRealTimeContainer).render(<NonRealTimeTest />)
 
 interface SettableParameters {
   // Directly translatable VAD parameters
-  model: "v5" | "legacy"
+  model: "v6"
   submitUserSpeechOnPause: boolean
   positiveSpeechThreshold: number
   negativeSpeechThreshold: number
@@ -40,8 +40,7 @@ type SettableParameter = keyof SettableParameters
 
 // Parameter descriptions for tooltips
 const settableParameterDescriptions: Record<SettableParameter, string> = {
-  model:
-    "The VAD model to use. 'v5' is the latest model, 'legacy' is the older version.",
+  model: "The VAD model to use (v6).",
   assetPaths:
     "Asset path configuration: 'root' for local root, 'subpath' for local subpath, 'cdn' for CDN delivery.",
   submitUserSpeechOnPause:
@@ -67,7 +66,7 @@ const settableParameterValidators: Record<
   SettableParameter,
   (value: any) => boolean
 > = {
-  model: (value) => value === "v5" || value === "legacy",
+  model: (value) => value === "v6",
   assetPaths: (value) =>
     value === "root" || value === "subpath" || value === "cdn",
   submitUserSpeechOnPause: (value) => typeof value === "boolean",
@@ -172,7 +171,7 @@ const ModelSelect = ({
   newValue,
   setSettableParamsFn,
 }: {
-  newValue: "v5" | "legacy"
+  newValue: "v6"
   setSettableParamsFn: (
     fn: (prevValues: SettableParameters) => SettableParameters
   ) => void
@@ -181,7 +180,7 @@ const ModelSelect = ({
     value={newValue}
     onChange={(e) =>
       setSettableParamsFn((prevValues) => {
-        if (e.target.value != "legacy" && e.target.value != "v5") {
+        if (e.target.value != "v6") {
           console.error(`Invalid value for model: ${e.target.value}`)
           return prevValues
         }
@@ -193,8 +192,7 @@ const ModelSelect = ({
     }
     className="rounded mx-5"
   >
-    <option value="legacy">legacy</option>
-    <option value="v5">v5</option>
+    <option value="v6">v6</option>
   </select>
 )
 
@@ -269,7 +267,7 @@ const assetPathsConfig: Record<
 }
 
 const defaultVADOptions: ReactRealTimeVADOptions =
-  getDefaultReactRealTimeVADOptions("v5")
+  getDefaultReactRealTimeVADOptions("v6")
 
 const defaultSettableParams: SettableParameters = {
   model: defaultVADOptions.model,

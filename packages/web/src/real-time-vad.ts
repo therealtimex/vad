@@ -9,17 +9,10 @@ import {
 } from "./frame-processor"
 import { log } from "./logging"
 import { Message } from "./messages"
-import {
-  Model,
-  ModelFactory,
-  OrtOptions,
-  SileroLegacy,
-  SileroV5,
-  SpeechProbabilities,
-} from "./models"
+import { Model, ModelFactory, OrtOptions, SileroV6, SpeechProbabilities } from "./models"
 import { Resampler } from "./resampler"
 
-export const DEFAULT_MODEL = "legacy"
+export const DEFAULT_MODEL = "v6"
 
 interface RealTimeVADCallbacks {
   /** Callback to run after each frame. The size (number of samples) of a frame is given by `frameSamples`. */
@@ -54,7 +47,7 @@ type AssetOptions = {
 }
 
 type ModelOptions = {
-  model: "v5" | "legacy"
+  model: "v6"
 }
 
 export interface RealTimeVADOptions
@@ -71,12 +64,9 @@ export interface RealTimeVADOptions
 export const ort = ortInstance
 
 const workletFile = "vad.worklet.bundle.min.js"
-const sileroV5File = "silero_vad_v5.onnx"
-const sileroLegacyFile = "silero_vad_legacy.onnx"
+const sileroV6File = "silero_vad_v6.onnx"
 
-export const getDefaultRealTimeVADOptions = (
-  model: "v5" | "legacy"
-): RealTimeVADOptions => {
+export const getDefaultRealTimeVADOptions = (model: "v6"): RealTimeVADOptions => {
   return {
     ...defaultFrameProcessorOptions,
     onFrameProcessed: (
@@ -227,11 +217,8 @@ export class AudioNodeVAD {
       fullOptions.ortConfig(ort)
     }
 
-    const modelFile =
-      fullOptions.model === "v5" ? sileroV5File : sileroLegacyFile
-    const modelURL = fullOptions.baseAssetPath + modelFile
-    const modelFactory: ModelFactory =
-      fullOptions.model === "v5" ? SileroV5.new : SileroLegacy.new
+    const modelURL = fullOptions.baseAssetPath + sileroV6File
+    const modelFactory: ModelFactory = SileroV6.new
     let model: Model
     try {
       model = await modelFactory(ort, () => defaultModelFetcher(modelURL))
@@ -240,7 +227,7 @@ export class AudioNodeVAD {
       throw e
     }
 
-    const frameSamples = fullOptions.model === "v5" ? 512 : 1536
+    const frameSamples = 512
     const msPerFrame = frameSamples / 16
 
     const frameProcessor = new FrameProcessor(

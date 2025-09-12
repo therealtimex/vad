@@ -29,7 +29,7 @@ async function main() {
     })
     const myvad = await MicVAD.new({
       stream,
-      model: "v5",
+      model: "v6",
       baseAssetPath: "/",
       onnxWASMBasePath: "/",
       positiveSpeechThreshold: 0.4,

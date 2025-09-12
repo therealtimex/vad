@@ -19,7 +19,7 @@ describe("VAD Web Package Sanity Tests", () => {
     })
 
     test("should have expected default model", () => {
-      expect(DEFAULT_MODEL).toBe("legacy")
+      expect(DEFAULT_MODEL).toBe("v6")
     })
 
     test("should have utility functions", () => {
@@ -69,13 +69,13 @@ describe("VAD Web Package Sanity Tests", () => {
     })
 
     test("should get default real-time VAD options", () => {
-      const options = getDefaultRealTimeVADOptions("legacy")
+      const options = getDefaultRealTimeVADOptions("v6")
       expect(options).toBeDefined()
       expect(typeof options).toBe("object")
     })
 
     test("should create MicVAD with default options", async () => {
-      const vad = await MicVAD.new({ model: "legacy" })
+      const vad = await MicVAD.new({ model: "v6" })
       expect(vad).toBeDefined()
       expect(typeof vad.start).toBe("function")
       expect(typeof vad.pause).toBe("function")
@@ -84,7 +84,7 @@ describe("VAD Web Package Sanity Tests", () => {
 
     test("should create AudioNodeVAD with default options", async () => {
       const audioContext = new AudioContext()
-      const vad = await AudioNodeVAD.new(audioContext, { model: "legacy" })
+      const vad = await AudioNodeVAD.new(audioContext, { model: "v6" })
       expect(vad).toBeDefined()
       expect(typeof vad.start).toBe("function")
       expect(typeof vad.pause).toBe("function")

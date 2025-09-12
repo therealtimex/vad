@@ -4,7 +4,7 @@ import { useState } from "react"
 export const Demo = () => {
   const [audioList, setAudioList] = useState<string[]>([])
   const vad = useMicVAD({
-    model: "v5",
+    model: "v6",
     baseAssetPath: "/",
     onnxWASMBasePath: "/",
     onSpeechEnd: (audio) => {

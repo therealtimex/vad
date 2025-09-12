@@ -2,36 +2,36 @@ import * as ort from "onnxruntime-web"
 import { log } from "../logging"
 import { ModelFactory, ModelFetcher, SpeechProbabilities } from "./common"
 
-export class SileroLegacy {
+function getNewState(ortInstance: typeof ort) {
+  const zeroes = Array(2 * 128).fill(0)
+  return new ortInstance.Tensor("float32", zeroes, [2, 1, 128])
+}
+
+export class SileroV6 {
   constructor(
-    private ortInstance: typeof ort,
     private _session: ort.InferenceSession,
-    private _h: ort.Tensor,
-    private _c: ort.Tensor,
-    private _sr: ort.Tensor
+    private _state: ort.Tensor,
+    private _sr: ort.Tensor,
+    private ortInstance: typeof ort
   ) {}
 
   static new: ModelFactory = async (
     ortInstance: typeof ort,
     modelFetcher: ModelFetcher
   ) => {
-    log.debug("initializing vad")
+    log.debug("Loading VAD (v6)...")
+    log.debug("ort loglevel set to", ortInstance.env.logLevel)
     const modelArrayBuffer = await modelFetcher()
     const _session = await ortInstance.InferenceSession.create(modelArrayBuffer)
     // @ts-ignore
     const _sr = new ortInstance.Tensor("int64", [16000n])
-    const zeroes = Array(2 * 64).fill(0)
-    const _h = new ortInstance.Tensor("float32", zeroes, [2, 1, 64])
-    const _c = new ortInstance.Tensor("float32", zeroes, [2, 1, 64])
-    log.debug("vad is initialized")
-    const model = new SileroLegacy(ortInstance, _session, _h, _c, _sr)
-    return model
+    const _state = getNewState(ortInstance)
+    log.debug("...finished loading VAD (v6)")
+    return new SileroV6(_session, _state, _sr, ortInstance)
   }
 
   reset_state = () => {
-    const zeroes = Array(2 * 64).fill(0)
-    this._h = new this.ortInstance.Tensor("float32", zeroes, [2, 1, 64])
-    this._c = new this.ortInstance.Tensor("float32", zeroes, [2, 1, 64])
+    this._state = getNewState(this.ortInstance)
   }
 
   process = async (audioFrame: Float32Array): Promise<SpeechProbabilities> => {
@@ -41,15 +41,18 @@ export class SileroLegacy {
     ])
     const inputs = {
       input: t,
-      h: this._h,
-      c: this._c,
+      state: this._state,
       sr: this._sr,
     }
     const out = await this._session.run(inputs)
-    this._h = out["hn"] as ort.Tensor
-    this._c = out["cn"] as ort.Tensor
-    const [isSpeech] = out["output"]?.data as unknown as [number]
+
+    // @ts-ignore
+    this._state = out["stateN"]
+
+    // @ts-ignore
+    const [isSpeech] = out["output"]?.data
     const notSpeech = 1 - isSpeech
     return { notSpeech, isSpeech }
   }
 }
+

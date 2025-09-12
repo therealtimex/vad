@@ -39,7 +39,7 @@ const NonRealTimeTest: React.FC = () => {
         process.env["NODE_ENV"] === "development"
           ? {
               // Use local assets in development
-              modelURL: "./silero_vad_legacy.onnx",
+              modelURL: "./silero_vad_v6.onnx",
               modelFetcher: (path: string) =>
                 fetch(path).then((r) => r.arrayBuffer()),
             }

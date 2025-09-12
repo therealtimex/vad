@@ -23,6 +23,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - name: Install Node deps
+        run: npm ci
+      - name: Build packages
+        run: npm run build
+      - name: Build test site
+        run: npm run build-test-site
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -34,6 +44,10 @@ jobs:
         run: poetry install
       - name: Build site
         run: poetry run mkdocs build -d _site
+      - name: Add test-site to docs artifact
+        run: |
+          mkdir -p _site/test-site
+          cp -R test-site/dist/* _site/test-site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
