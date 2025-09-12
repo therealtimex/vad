@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install Node deps
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Build packages
         run: npm run build
       - name: Build test site
