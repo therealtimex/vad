@@ -256,7 +256,7 @@ const assetPathsConfig: Record<
   },
   cdn: {
     baseAssetPath:
-      "https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@latest/dist/",
+      "https://cdn.jsdelivr.net/npm/@realtimex/vad-web@latest/dist/",
     onnxWASMBasePath:
       "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/",
   },
