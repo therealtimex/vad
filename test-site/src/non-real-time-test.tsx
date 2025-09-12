@@ -42,9 +42,19 @@ const NonRealTimeTest: React.FC = () => {
               modelURL: "./silero_vad_v6.onnx",
               modelFetcher: (path: string) =>
                 fetch(path).then((r) => r.arrayBuffer()),
+              // Ensure ORT wasm is loaded from the test-site root
+              ortConfig: (ort: any) => {
+                ort.env.wasm.wasmPaths = "./"
+              },
             }
           : {
-              // Use default CDN assets in production
+              // Use assets served under /test-site/ in production (GitHub Pages)
+              modelURL: "./silero_vad_v6.onnx",
+              modelFetcher: (path: string) =>
+                fetch(path).then((r) => r.arrayBuffer()),
+              ortConfig: (ort: any) => {
+                ort.env.wasm.wasmPaths = "./"
+              },
             }
 
       const myvad = await NonRealTimeVAD.new(vadConfig)
