@@ -1,0 +1,37 @@
+name: Cleanup Release-Test Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch to delete (e.g., release-test/v0.1.4)
+        required: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate target branch
+        id: validate
+        run: |
+          BR="${{ github.event.inputs.branch }}"
+          echo "branch=$BR" >> $GITHUB_OUTPUT
+          case "$BR" in
+            release-test/*) echo "Branch name ok" ;;
+            *) echo "Refusing to delete non release-test/* branch"; exit 1 ;;
+          esac
+
+      - name: Show remote branches
+        run: git ls-remote --heads origin | sed 's/.*refs\/heads\///'
+
+      - name: Delete remote branch
+        run: |
+          BR="${{ steps.validate.outputs.branch }}"
+          echo "Deleting remote branch $BR"
+          git push origin --delete "$BR"
+

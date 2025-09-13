@@ -1,0 +1,92 @@
+name: GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release (e.g., 0.1.3)
+        required: true
+      publish:
+        description: Publish to npmjs?
+        required: false
+        default: true
+        type: boolean
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Determine tag and version
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            TAG_NAME="${GITHUB_REF_NAME}"
+            echo "tag=${TAG_NAME}" >> $GITHUB_OUTPUT
+            echo "version=${TAG_NAME#v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump versions in repo
+        run: |
+          node scripts/bump-version.mjs ${{ steps.vars.outputs.version }}
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          git add -A
+          git commit -m "release: v${{ steps.vars.outputs.version }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.publish }}" = "false" ]; then
+            BR="release-test/v${{ steps.vars.outputs.version }}"
+            git checkout -b "$BR"
+            git push origin "$BR"
+          else
+            git tag ${{ steps.vars.outputs.tag }}
+            git push origin HEAD:master --follow-tags
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: ${{ steps.vars.outputs.tag }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish) }}
+
+      - name: Publish @realtimex/vad-web
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/web
+          npm install --no-audit --no-fund
+          npm run build
+          npm publish --access public
+
+      - name: Publish @realtimex/vad-react
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/react
+          npm install --no-audit --no-fund
+          npm run build
+          npm publish --access public
