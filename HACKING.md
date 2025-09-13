@@ -1,1 +1,1 @@
-See the [docs](https://docs.vad.ricky0123.com/developer-guide/hacking).
+See the [docs](https://therealtimex.github.io/vad/developer-guide/hacking/).

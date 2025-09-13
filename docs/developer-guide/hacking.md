@@ -13,11 +13,11 @@ After cloning the repository, the following commands will install dependencies f
 
 ## Manual testing
 
-There is a test site to run the VAD with different parameters for manual testing purposes. It is in fact deployed at [test.vad.ricky0123.com](https://test.vad.ricky0123.com). You can run it locally by running `npm run dev`. When you open a PR, Vercel should deploy a preview version of the test site so that reviewers can test your changes.
+There is a test site to run the VAD with different parameters for manual testing purposes. It is deployed at [therealtimex.github.io/vad/test-site](https://therealtimex.github.io/vad/test-site/). You can run it locally by running `npm run dev`.
 
 ## Quick notes about playing with the VAD model interactively in the browser console
 
-Go to [test.vad.ricky0123.com](https://test.vad.ricky0123.com) and open the browser console. Then run the following line by line:
+Go to the [test site](https://therealtimex.github.io/vad/test-site/) and open the browser console. Then run the following line by line:
 
 ```js linenums="1"
 script = this.document.createElement("script")
