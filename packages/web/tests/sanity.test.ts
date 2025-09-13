@@ -82,6 +82,29 @@ describe("VAD Web Package Sanity Tests", () => {
       expect(typeof vad.destroy).toBe("function")
     })
 
+    test("destroy should call pauseStream only once", async () => {
+      const pauseStream = jest.fn(async (stream: MediaStream) => {
+        stream.getTracks().forEach((track) => track.stop())
+        ;(stream as any).active = false
+      })
+      const vad = await MicVAD.new({ model: "legacy", pauseStream })
+      await vad.start()
+      vad.destroy()
+      expect(pauseStream).toHaveBeenCalledTimes(1)
+    })
+
+    test("destroy after manual pause should not call pauseStream again", async () => {
+      const pauseStream = jest.fn(async (stream: MediaStream) => {
+        stream.getTracks().forEach((track) => track.stop())
+        ;(stream as any).active = false
+      })
+      const vad = await MicVAD.new({ model: "legacy", pauseStream })
+      await vad.start()
+      vad.pause()
+      vad.destroy()
+      expect(pauseStream).toHaveBeenCalledTimes(1)
+    })
+
     test("should create AudioNodeVAD with default options", async () => {
       const audioContext = new AudioContext()
       const vad = await AudioNodeVAD.new(audioContext, { model: "v6" })
