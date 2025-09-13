@@ -23,7 +23,7 @@ To use the VAD via a script tag in the browser, include the following script tag
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.2/dist/bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.3/dist/bundle.min.js"></script>
 <script>
   async function main() {
     const myvad = await vad.MicVAD.new({
@@ -34,7 +34,7 @@ To use the VAD via a script tag in the browser, include the following script tag
         // do something with `audio` (Float32Array of audio samples at sample rate 16000)...
       },
       onnxWASMBasePath: "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/",
-      baseAssetPath: "https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.2/dist/",
+      baseAssetPath: "https://cdn.jsdelivr.net/npm/@realtimex/vad-web@0.1.3/dist/",
     })
     myvad.start()
   }
