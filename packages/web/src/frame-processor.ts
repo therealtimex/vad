@@ -39,11 +39,11 @@ export interface FrameProcessorOptions {
 }
 
 export const defaultFrameProcessorOptions: FrameProcessorOptions = {
-  positiveSpeechThreshold: 0.3,
-  negativeSpeechThreshold: 0.25,
-  preSpeechPadMs: 800,
-  redemptionMs: 1400,
-  minSpeechMs: 400,
+  positiveSpeechThreshold: 0.5,
+  negativeSpeechThreshold: 0.35,
+  preSpeechPadMs: 96,
+  redemptionMs: 768,
+  minSpeechMs: 288,
   submitUserSpeechOnPause: false,
 }
 

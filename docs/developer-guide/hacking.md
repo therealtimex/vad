@@ -24,7 +24,7 @@ script = this.document.createElement("script")
 script.src = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js" 
 document.body.appendChild(script)
 // wait a few seconds
-modelarraybuffer = await fetch(`${location}silero_vad_v5.onnx`).then((model) => model.arrayBuffer())
+modelarraybuffer = await fetch(`${location}silero_vad_v6.onnx`).then((model) => model.arrayBuffer())
 session = await ort.InferenceSession.create(modelarraybuffer)
 state_zeroes = Array(2 * 128).fill(0)
 state = new this.ort.Tensor("float32", state_zeroes, [2, 1, 128])  // https://github.com/snakers4/silero-vad/blob/fdbb0a3a81e0f9d95561d6b388d67dce5d9e3f1b/utils_vad.py#L58
