@@ -27,6 +27,7 @@ nav:
   - User Guide:
       - Browser: user-guide/browser.md
       - React: user-guide/react.md
+      - Voice Chat: user-guide/voice-chat.md
       - API: user-guide/api.md
       - Algorithm: user-guide/algorithm.md
       - Silero V5: user-guide/silero-v5.md
